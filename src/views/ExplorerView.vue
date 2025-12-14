@@ -9,17 +9,17 @@ import {
   searchFoldersFiles,
   createItem,
   updateItem,
-  deleteItem
+  deleteItem,
+  getFolderPath
 } from '@/api/folderApi'
 
 const router = useRouter()
-
 const props = defineProps<{ id?: string }>()
-
 const ROOT = import.meta.env.VITE_ROOT_ID
 
 const folderId = ref<string>(ROOT)
 const data = ref<any>(null)
+const path = ref<any[]>([])
 const search = ref('')
 
 onMounted(() => {
@@ -29,6 +29,7 @@ onMounted(() => {
 async function open(id: string) {
   folderId.value = id === '1' ? ROOT : id
   data.value = await getFolderContent(folderId.value)
+  path.value = await getFolderPath(folderId.value)
   router.push('/folders/' + folderId.value)
 }
 
@@ -67,7 +68,6 @@ async function rename(type: 'folder' | 'file', id: string, oldName: string) {
 
 async function remove(type: 'folder' | 'file', id: string) {
   if (!confirm('Delete item?')) return
-
   await deleteItem(type, id)
   open(folderId.value)
 }
@@ -76,6 +76,7 @@ function home() {
   window.location.href = '/'
 }
 </script>
+
 
 <template>
   <div class="toolbar">
@@ -92,7 +93,7 @@ function home() {
     </div>
 
     <div class="right">
-      <RightPanel :data="data" @select="open" @rename="rename" @delete="remove" />
+      <RightPanel :data="data" :path="path" @select="open" @rename="rename" @delete="remove" />
     </div>
   </div>
 </template>

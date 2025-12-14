@@ -1,3 +1,4 @@
+// /src/api/folderApi.ts
 import type { Folder, FileItem } from '@/types/folder'
 
 const BASE_URL = import.meta.env.VITE_BASE_API_URL
@@ -8,7 +9,7 @@ export async function getFolderContent(folderId: string): Promise<{
 }> {
     // Uncomment below to use real API
     try {
-        const res = await fetch(`${BASE_URL}/folders/${folderId}`)
+        const res = await fetch(`${BASE_URL}/folders/${folderId}/subfolder`)
         if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`)
         }
@@ -23,6 +24,16 @@ export async function getFolderContent(folderId: string): Promise<{
         }
     }
 }
+
+export async function getFolderPath(folderId: string): Promise<Folder[]> {
+    const res = await fetch(`${BASE_URL}/folders/${folderId}/path`)
+    if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`)
+    }
+    const json = await res.json()
+    return json.data
+}
+
 
 export async function searchFoldersFiles(q: string): Promise<{
     folders: Folder[]

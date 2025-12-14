@@ -1,13 +1,16 @@
 <!-- /src/components/RightPanel.vue -->
 <script setup lang="ts">
+
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import type { Folder, FileItem } from '@/types/folder'
+
 
 const props = defineProps<{
   data: {
     subfolders: Folder[]
     filesInFolder: FileItem[]
   } | null
+  path: Folder[]
 }>()
 
 const emit = defineEmits<{
@@ -99,7 +102,15 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
+  <div class="breadcrumb">
+    <span v-for="(item, i) in path" :key="item.id" class="crumb" @click="emit('select', item.id)">
+      {{ item.name }}
+      <span v-if="i < path.length - 1"> / </span>
+    </span>
+  </div>
   <div v-if="data && (data.subfolders.length || data.filesInFolder.length)">
+
+
     <table class="details-table">
       <thead>
         <tr>
@@ -185,5 +196,19 @@ onBeforeUnmount(() => {
 
 .menu-item.danger {
   color: #c0392b;
+}
+
+.breadcrumb {
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.crumb {
+  cursor: pointer;
+  color: #2563eb;
+}
+
+.crumb:hover {
+  font-weight: bold;
 }
 </style>
