@@ -7,7 +7,6 @@ export async function getFolderContent(folderId: string): Promise<{
     subfolders: Folder[]
     filesInFolder: FileItem[]
 }> {
-    // Uncomment below to use real API
     try {
         const res = await fetch(`${BASE_URL}/folders/${folderId}/subfolder`)
         if (!res.ok) {
@@ -17,7 +16,6 @@ export async function getFolderContent(folderId: string): Promise<{
         return json.data
     } catch (error) {
         console.error('Error fetching folder content:', error)
-        // Fallback to empty data
         return {
             subfolders: [],
             filesInFolder: []
