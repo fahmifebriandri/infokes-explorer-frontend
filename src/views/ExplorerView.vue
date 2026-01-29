@@ -10,7 +10,8 @@ import {
   createItem,
   updateItem,
   deleteItem,
-  getFolderPath
+  getFolderPath,
+  getUpFolderId
 } from '@/api/folderApi'
 
 const router = useRouter()
@@ -75,12 +76,19 @@ async function remove(type: 'folder' | 'file', id: string) {
 function home() {
   window.location.href = '/'
 }
+
+async function upFolder() {
+  const result = await getUpFolderId(props.id)
+  if(result.parent_id == null) window.location.href = '/'
+  open(result.parent_id)
+}
 </script>
 
 
 <template>
   <div class="toolbar">
     <button @click="home">Home</button>
+    <button @click="upFolder">Up</button>
     <input v-model="search" @keyup.enter="doSearch" placeholder="Search..." />
     <button @click="doSearch">Search</button>
     <button @click="add('folder')">Add Folder</button>

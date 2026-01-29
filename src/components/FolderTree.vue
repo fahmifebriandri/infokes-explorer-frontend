@@ -51,6 +51,9 @@ watch(
 )
 
 onMounted(async () => {
+  console.log("props folder tree rootId: ", props.rootId)
+  console.log("props folder tree activeId: ", props.activeId)
+  console.log("props folder tree folder: ", props.folder)
   if (props.rootId) {
     await load(props.rootId)
     open.value = true

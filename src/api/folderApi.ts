@@ -83,3 +83,19 @@ export async function deleteItem(type: 'folder' | 'file', id: string): Promise<a
     const json = await res.json()
     return json
 }
+
+export async function getUpFolderId(folderId: string): Promise<any> {
+    try {
+        const res = await fetch(`${BASE_URL}/folders/${folderId}/parentid`)
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`)
+        }
+        const json = await res.json()
+        return json.data
+    } catch (error) {
+        console.error('Error fetching content:', error)
+        return {
+            parent_id: ''
+        }
+    }
+}
